@@ -28,8 +28,8 @@
             <div class="card-body">
                <div class="card-title">{{product.title}}</div>
                <div style="color:rgb(238, 163, 24)" class="card-text">$ {{ product.price }}</div>
-               <button class="btn btn-warning">Voire</button>
-               <button class="btn btn-success"> Ajouter</button>
+               <a href="{{ product.id }}" class="btn  btn-warning">Voire</a>
+               <button id="{{product.id}}" class="btn ted  btn-success"> Ajouter</button>
             </div>
         </div>
       </div>
@@ -38,7 +38,8 @@
 
      <div class="row mt-3">
        <div class="col-md-3 offset-md-4">
-         <ul class="paginator">
+
+         <ul class="pagination">
             {% if product_object.has_previous %}
              <li class="page-item">
                <a class="page-link" href="?page={{product_object.previous_page_number}}">Precedent</a>
@@ -61,4 +62,31 @@
          </ul>
        </div>
      </div>
+{% endblock %}
+
+{% block js%}
+   <script type="text/javascript">
+
+       console.log('juste pour tester');
+       if(localStorage.getItem('panier')== null){
+
+        var panier ={};
+       }else{
+           
+        var panier = JSON.parse(localStorage.getItem('panier'));
+       }
+       $(document).on('click', '.ted', function(){
+        console.log('ajouter');
+
+        var item_id = this.id.toString();
+        console.log(item_id);
+        if(panier[item_id] != undefined){
+          panier[item_id] = panier[item_id] + 1;
+        }else{
+          panier[item_id] = 1;
+        }
+        console.log(panier);
+        localStorage.setItem('panier', JSON.stringify(panier));
+       });
+   </script>
 {% endblock %}
